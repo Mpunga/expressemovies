@@ -4,10 +4,14 @@
 
 // Importation du module Express pour créer le serveur web
 const express = require('express');
-const app = express();
+
 const PORT = 3000; // Port sur lequel le serveur écoute
 const bodyParser = require('body-parser')
 
+const multer  = require('multer')
+const upload = multer({ dest: 'uploads/' })
+
+const app = express();
 
 let frenchMovies = [
   {
@@ -60,7 +64,7 @@ app.get('/movies', (req, res) => {
   res.render('movies', { movies: frenchMovies, title: title });
 });
 
-app.post('/movies', (req, res) => {
+/* app.post('/movies', (req, res) => {
   console.log('Données reçues :', req.body);
   const newMovie = {
     id: frenchMovies.length + 1,
@@ -71,7 +75,23 @@ app.post('/movies', (req, res) => {
   frenchMovies.push(newMovie);
   console.log(frenchMovies);
   res.sendStatus(201);
+}); */
+
+app.post('/movies', upload.single('poster'), (req, res) => {
+  console.log('Données reçues :', req.body);
+  console.log('Fichier reçu :', req.file);
+  const newMovie = {
+    id: frenchMovies.length + 1,
+    title: req.body.title,  
+    director: req.body.director,
+    releaseYear: Number(req.body.releaseYear),
+    poster: req.file ? req.file.filename : null
+  };
+  frenchMovies.push(newMovie);
+  console.log(frenchMovies);
+  res.sendStatus(201);
 });
+
 
 // ROUTE 2 (commentée) : Ancienne route pour les détails d' un film
 // app.get('/movie-details', (req, res) => {
