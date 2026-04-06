@@ -1,0 +1,439 @@
+/* =====================================================
+   FEUILLE DE STYLE PRINCIPAL - Express Movies
+   Tous les styles du site
+   ===================================================== */
+
+/* =====================================================
+   RESET ET STYLES GLOBAUX
+   ===================================================== */
+/* Réinitialise les styles par défaut des navigateurs */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Style du corps de la page */
+body {
+    font-family: Consolas, Monaco, "Andale Mono", monospace;
+}
+
+/* =====================================================
+   ENTÊTE (HEADER) ET NAVIGATION
+   ===================================================== */
+/* Zone principale du header avec gradient bleu-violet */
+.header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 0;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Barre de navigation - Centrée */
+.navbar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Conteneur de navigation - Flex pour espacement */
+.nav-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 1200px;
+    padding: 1rem 2rem;
+}
+
+/* Logo du site */
+.logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: white;
+    transition: all 0.3s ease;
+}
+
+/* Effet au survol du logo */
+.logo:hover {
+    transform: scale(1.05);
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+}
+
+/* Menu de navigation - Liste horizontale */
+.nav-menu {
+    display: flex;
+    list-style: none;
+    gap: 2rem;
+}
+
+/* Éléments du menu */
+.nav-menu li {
+    position: relative;
+}
+
+/* Liens du menu de navigation */
+.nav-menu a {
+    color: white;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    padding: 0.5rem 0;
+    display: inline-block;
+}
+
+/* Effet au survol des liens du menu */
+.nav-menu a:hover {
+    color: #ffd700;
+    border-bottom: 2px solid #ffd700;
+}
+
+.central {
+    min-height: 250px;
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 2rem;
+}
+
+/* =====================================================
+   BOUTONS - Styles génériques
+   ===================================================== */
+/* Classe de base pour tous les boutons */
+.btn {
+    display: inline-block;
+    padding: 0.75rem 1.5rem;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    text-decoration: none;
+    border: none;
+    font-size: 1rem;
+}
+
+/* Bouton primaire - Gradient bleu-violet */
+.btn-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+/* Effet au survol du bouton primaire */
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 15px rgba(102, 126, 234, 0.4);
+}
+
+/* Bouton secondaire - Bleu uni */
+.btn-secondary {
+    background-color: #667eea;
+    color: white;
+    font-size: 0.9rem;
+    padding: 0.5rem 1rem;
+}
+
+/* Effet au survol du bouton secondaire */
+.btn-secondary:hover {
+    background-color: #764ba2;
+    transform: translateY(-2px);
+}
+
+/* Bouton de retour (retour aux films) */
+.btn-back {
+    display: inline-block;
+    margin-bottom: 2rem;
+    color: #667eea;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    text-decoration: none;
+}
+
+/* Effet au survol du bouton retour */
+.btn-back:hover {
+    color: #764ba2;
+}
+
+/* =====================================================
+   PAGE D'ACCUEIL - Section Héro
+   ===================================================== */
+/* Section d'accueil avec contenu principal */
+.hero-section {
+    text-align: center;
+    padding: 3rem 0;
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+    border-radius: 10px;
+    padding: 3rem;
+    margin-bottom: 2rem;
+}
+
+/* Titre principal de la section héro */
+.hero-section h1 {
+    font-size: 3rem;
+    color: #333;
+    margin-bottom: 0.5rem;
+}
+
+/* Sous-titre de la section héro */
+.subtitle {
+    font-size: 1.5rem;
+    color: #667eea;
+    margin-bottom: 1rem;
+    font-weight: bold;
+}
+
+/* Texte de description */
+.description {
+    font-size: 1.1rem;
+    color: #666;
+    margin-bottom: 2rem;
+    line-height: 1.6;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* =====================================================
+   PAGE FILMS - En-tête et liste
+   ===================================================== */
+/* En-tête de la page des films */
+.content-header {
+    text-align: center;
+    margin-bottom: 3rem;
+    padding-bottom: 2rem;
+    border-bottom: 2px solid #667eea;
+}
+
+/* Titre de l'en-tête du contenu */
+.content-header h1 {
+    font-size: 2.5rem;
+    color: #333;
+    margin-bottom: 0.5rem;
+}
+
+/* Paragraphe de l'en-tête du contenu */
+.content-header p {
+    font-size: 1.1rem;
+    color: #666;
+}
+
+/* =====================================================
+   GRILLE DE FILMS
+   ===================================================== */
+/* Grille responsive pour afficher les films */
+.movies-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 2rem;
+    margin: 2rem 0;
+}
+
+/* Carte individuelle de film */
+.movie-card {
+    background: white;
+    border-radius: 10px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    border: 1px solid #eee;
+}
+
+/* Effet au survol d'une carte de film */
+.movie-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 25px rgba(102, 126, 234, 0.2);
+    border-color: #667eea;
+}
+
+/* Zone visuelle du film (affiche) */
+.movie-poster {
+    font-size: 4rem;
+    text-align: center;
+    margin-bottom: 1rem;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 2rem;
+    border-radius: 8px;
+}
+
+/* Titre du film dans la carte */
+.movie-card h2 {
+    font-size: 1.3rem;
+    color: #333;
+    margin-bottom: 0.5rem;
+}
+
+/* Informations : réalisateur et année */
+.director,
+.year {
+    font-size: 0.95rem;
+    color: #666;
+    margin-bottom: 0.5rem;
+}
+
+/* Message si aucun film disponible */
+.no-movies {
+    text-align: center;
+    color: #999;
+    font-size: 1.1rem;
+    padding: 2rem;
+}
+
+/* =====================================================
+   PAGE DÉTAILS DU FILM
+   ===================================================== */
+/* Conteneur pour les détails du film */
+.movie-details-container {
+    padding: 2rem 0;
+}
+
+/* Grille de disposition des détails du film */
+.movie-details {
+    display: grid;
+    grid-template-columns: 1fr 1.5fr;
+    gap: 3rem;
+    align-items: start;
+}
+
+/* Grande affiche du film sur la page de détails */
+.movie-poster-large {
+    font-size: 8rem;
+    text-align: center;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 3rem;
+    border-radius: 10px;
+    box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+}
+
+/* Titre du film sur la page de détails */
+.movie-info h1 {
+    font-size: 2.5rem;
+    color: #333;
+    margin-bottom: 1.5rem;
+}
+
+/* Grille des détails du film */
+.details-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+/* Élément individuel des détails */
+.detail-item {
+    background: #f5f5f5;
+    padding: 1rem;
+    border-radius: 5px;
+    color: #333;
+}
+
+/* Section de description/synopsis */
+.description h2 {
+    font-size: 1.5rem;
+    color: #333;
+    margin-bottom: 1rem;
+    margin-top: 2rem;
+}
+
+/* Paragraphe de description */
+.description p {
+    line-height: 1.8;
+    color: #666;
+}
+
+/* =====================================================
+   FORMULAIRE D'AJOUT DE FILM
+   ===================================================== */
+/* Section contenant le formulaire */
+.add-movie-section {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
+    border: 2px solid #667eea;
+    border-radius: 10px;
+    padding: 2rem;
+    margin-top: 3rem;
+}
+
+/* Titre du formulaire */
+.add-movie-section h2 {
+    font-size: 1.5rem;
+    color: #333;
+    margin-bottom: 1.5rem;
+}
+
+/* Grille du formulaire avec champs côte à côte */
+.add-movie-form {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    align-items: flex-end;
+}
+
+/* Groupe de champ de formulaire (label + input) */
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Étiquette du champ de formulaire */
+.form-group label {
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 0.5rem;
+    font-size: 0.95rem;
+}
+
+/* Champs d'entrée du formulaire */
+.form-group input {
+    padding: 0.75rem;
+    border: 2px solid #ddd;
+    border-radius: 5px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    font-family: inherit;
+}
+
+/* Effet au focus (clic) sur un champ */
+.form-group input:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 8px rgba(102, 126, 234, 0.3);
+    background-color: #f9f9ff;
+}
+
+/* Positionnement du bouton dans le formulaire */
+.add-movie-form .btn-primary {
+    align-self: flex-end;
+    margin-top: 0.5rem;
+}
+
+/* =====================================================
+   RESPONSIVE DESIGN - Adaptation pour les petits écrans
+   ===================================================== */
+@media (max-width: 768px) {
+    /* Réduit la taille du titre principal */
+    .hero-section h1 {
+        font-size: 2rem;
+    }
+
+    /* Réduit la taille du sous-titre */
+    .subtitle {
+        font-size: 1.2rem;
+    }
+
+    /* Réduit la taille du titre du contenu */
+    .content-header h1 {
+        font-size: 1.8rem;
+    }
+
+    /* Adapte la grille de films pour les petits écrans */
+    .movies-grid {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 1rem;
+    }
+
+    /* Passe les détails du film en une colonne sur mobile */
+    .movie-details {
+        grid-template-columns: 1fr;
+    }
+
+    /* Réduit la grande affiche du film */
+    .movie-poster-large {
+        font-size: 5rem;
+    }
+}

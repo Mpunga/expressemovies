@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Encodage de caractère pour supporter les caractères spéciaux -->
+    <meta charset="UTF-8">
+    <!-- Configuration du viewport pour le responsive design -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Titre de la page (affiché dans l'onglet du navigateur) -->
+    <title>Express movies</title>
+    <!-- Lien vers le fichier CSS personnalisé -->
+    <link rel="stylesheet" href="/public/style.css">
+</head>
+<body>
+     <!-- Inclusion du header (entête commune) depuis le dossier partials -->
+     <%- include('partials/header') %>
+     
+     <!-- Conteneur principal du contenu -->
+     <div class="central">
+         <!-- Section héro : Présenation du site -->
+         <div class="hero-section">
+             <!-- Titre principal du site -->
+             <h1>Express Movies</h1>
+             
+             <!-- Sous-titre -->
+             <p class="subtitle">Le site des cinéphiles</p>
+             
+             <!-- Description générale du service -->
+             <p class="description">Découvrez des films et séries pour tous les goûts. Que tu aimes l'action, la romance, la science-fiction ou le drame, tu trouveras ton bonheur chez nous!</p>
+             
+             <!-- Bouton d'appel à l'action menant vers la page des films -->
+             <a href="/movies" class="btn btn-primary">Explorer les films</a>
+         </div>
+     </div>
+     
+     <!-- Inclusion du footer (pied de page) depuis le dossier partials -->
+     <%- include('partials/footer') %>
+</body>
+</html>

@@ -1,0 +1,20 @@
+{
+  "name": "expressemovies",
+  "version": "1.0.0",
+  "description": "app for movie fans",
+  "license": "ISC",
+  "author": "eservices",
+  "type": "commonjs",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon app.js"
+  },
+  "dependencies": {
+    "body-parser": "^2.2.2",
+    "ejs": "^5.0.1",
+    "express": "^5.2.1",
+    "nodemon": "^3.0.22"
+  }
+}

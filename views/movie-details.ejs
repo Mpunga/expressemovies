@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Encodage de caractère pour supporter les caractères spéciaux -->
+    <meta charset="UTF-8">
+    <!-- Configuration du viewport pour le responsive design -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Lien vers le fichier CSS personnalisé -->
+    <link rel="stylesheet" href="/public/style.css">
+    <!-- Titre de la page -->
+    <title>Détails du Film - Express Movies</title>
+</head>
+<body>
+     <!-- Inclusion du header (entête commune) -->
+     <%- include('partials/header') -%>
+     
+     <!-- Conteneur principal du contenu -->
+     <div class="central">
+         <!-- Conteneur spécifique pour les détails du film -->
+         <div class="movie-details-container">
+             <!-- Lien de retour vers la liste des films -->
+             <a href="/movies" class="btn-back">← Retour aux films</a>
+             
+             <!-- Section des détails du film -->
+             <div class="movie-details">
+                 <!-- Large affiche/icône du film -->
+                 <div class="movie-poster-large">🎬</div>
+                 
+                 <!-- Informations du film -->
+                 <div class="movie-info">
+                     <!-- Titre affichant l'ID du film -->
+                     <h1>Film ID: <%= movieid %></h1>
+                     
+                     <!-- Grille des détails du film -->
+                     <div class="details-grid">
+                         <!-- Détail 1 : ID du film -->
+                         <div class="detail-item">
+                             <strong>ID:</strong> <%= movieid %>
+                         </div>
+                         
+                         <!-- Détail 2 : Genre -->
+                         <div class="detail-item">
+                             <strong>Genre:</strong> Fantasy
+                         </div>
+                         
+                         <!-- Détail 3 : Notation (5 stars) -->
+                         <div class="detail-item">
+                             <strong>Notation:</strong> ⭐⭐⭐⭐⭐
+                         </div>
+                     </div>
+                     
+                     <!-- Section de description du film -->
+                     <div class="description">
+                         <!-- Titre de la section -->
+                         <h2>Synopsis</h2>
+                         <!-- Texte du synopsis (Lorem Ipsum pour le moment) -->
+                         <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Aspernatur similique reprehenderit eligendi voluptatum! Cum excepturi pariatur fugit libero dolorem, praesentium consequatur voluptates facilis nulla, architecto mollitia veritatis quibusdam aspernatur molestias sit atque earum rem alias! Consequuntur fugit a exercitationem maiores.</p>
+                     </div>
+                 </div>
+             </div>
+         </div>
+     </div>
+     
+     <!-- Inclusion du footer (pied de page) -->
+     <%- include('partials/footer') %>
+</body>
+</html>
