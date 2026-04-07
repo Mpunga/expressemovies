@@ -14,6 +14,9 @@ const upload = multer({ dest: 'uploads/' })
 
 const app = express();
 
+const jwt = require('jsonwebtoken');
+
+
 let frenchMovies = [
   {
     id: 1,
@@ -117,9 +120,9 @@ app.post('/movies', upload.single('poster'), (req, res) => {
 //   res.render('movie-details')
 // })
 
-// ROUTE 3 : Ajouter un film (temporaire - affiche un message)
+// ROUTE 3 : Ajouter un film
 app.get('/movies/add', (req, res) => {
-  res.send('prochainement, un formulaire d\'ajout');
+  res.render('add-movie');
 })
 
 // ROUTE 4 : Afficher les détails d'un film spécifique via son ID
@@ -155,24 +158,35 @@ app.post('/login', (req, res) => {
   };
 
   if (fakeUser.email === email && fakeUser.password === password) {
-    // Création de la session utilisateur
+    const secret = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImlhdCI6MTUxNjIzOTAyMn0.KMUFsIDTnFmyG3nMiGM6H9FNFUROf3wh7SmqJp-QV30';
+    const token = jwt.sign({
+      sub: '1234567890',
+      name: 'John Doe',
+      admin: true,
+      iat: 1516239022
+    }, secret, { expiresIn: '1h' });
+    console.log('Token JWT généré :', token);
+
+    // Création de la session utilisateur avec le token
     req.session.user = {
       email: email,
-      name: 'Utilisateur'
+      name: 'Utilisateur',
+      token: token
     };
-    return res.redirect('/movies');
+
+    return res.json({ token });
   }
 
-  res.render('login', { error: 'Identifiants invalides. Essayez testuser@example.com / 123' });
+  res.status(401).json({ error: 'Identifiants invalides. Essayez testuser@example.com / 123' });
 });
 
 // ROUTE 7 : Logout
 app.get('/logout', (req, res) => {
   req.session.destroy((err) => {
     if (err) {
-      return res.render('index', { error: 'Erreur lors de la déconnexion' });
+      return res.render('login', { error: 'Erreur lors de la déconnexion' });
     }
-    res.redirect('/');
+    res.redirect('/login');
   });
 });
 

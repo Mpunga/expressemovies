@@ -27,8 +27,7 @@
                 
                 <!-- Affiche Connexion ou Déconnexion selon l'état -->
                 <% if (user) { %>
-                    <li><span class="user-info">👤 <%= user.email %></span></li>
-                    <li><a href="/logout" class="btn-logout">Déconnexion</a></li>
+                    <li><a href="/logout" class="btn-logout" onclick="localStorage.removeItem('authToken'); return true;">Déconnexion</a></li>
                 <% } else { %>
                     <li><a href="/login">Connexion</a></li>
                 <% } %>

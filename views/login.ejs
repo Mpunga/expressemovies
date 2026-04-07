@@ -42,6 +42,23 @@
     <%- include('partials/footer') %>
 
     <script>
+        // Fonction pour récupérer le token stocké
+        function getToken() {
+            return localStorage.getItem('authToken');
+        }
+
+        // Fonction pour récupérer les données du token
+        function decodeToken(token) {
+            try {
+                const parts = token.split('.');
+                if (parts.length !== 3) return null;
+                const decoded = JSON.parse(atob(parts[1]));
+                return decoded;
+            } catch (e) {
+                return null;
+            }
+        }
+
         document.querySelector('.login-form').addEventListener('submit', function(e) {
             e.preventDefault();
             const email = this.email.value.trim();
@@ -61,23 +78,26 @@
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                 body: `email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`
             })
-            .then(res => res.text())
-            .then(html => {
-                // Si on reçoit un HTML avec .login-form, c'est une erreur (re-rendu du formulaire)
-                if (html.includes('login-form')) {
-                    console.log('Authentification échouée');
-                    btn.textContent = originalText;
-                    btn.disabled = false;
-                    // Rechargez la page pour afficher le message d'erreur
-                    window.location.reload();
-                } else {
-                    // Succès - redirection vers /movies
-                    console.log('Authentification réussie');
+            .then(res => res.json())
+            .then(data => {
+                if (data.token) {
+                    console.log('Authentification réussie, token récupéré :', data.token);
+                    const decoded = decodeToken(data.token);
+                    console.log('Données du token :', decoded);
+                    localStorage.setItem('authToken', data.token);
+                    console.log('Token stocké dans localStorage');
                     window.location.href = '/movies';
+                    return;
                 }
+
+                console.log('Authentification échouée :', data.error);
+                alert(data.error || 'Erreur de connexion');
+                btn.textContent = originalText;
+                btn.disabled = false;
             })
             .catch(err => {
                 console.error('Erreur:', err);
+                alert('Erreur lors de la connexion. Réessayez.');
                 btn.textContent = originalText;
                 btn.disabled = false;
             });

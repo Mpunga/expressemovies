@@ -53,73 +53,9 @@
                <p class="no-movies">Aucun film disponible pour le moment.</p>
              <% } %>
          </div>
-         
-         <!-- Section pour ajouter un nouveau film -->
-         <div class="add-movie-section">
-             <!-- Titre de la section -->
-             <h2>➕ Ajouter un nouveau film</h2>
-             
-             <!-- Formulaire d'ajout de film -->
-             <form action="/movies" method="post" class="add-movie-form">
-                 <!-- Champ : Titre du film -->
-                 <div class="form-group">
-                     <label for="title">Titre du film</label>
-                     <input type="text" id="title" name="title" placeholder="Ex: Inception" required>
-                 </div>
-                 
-                 <!-- Champ : Réalisateur -->
-                 <div class="form-group">
-                     <label for="director">Réalisateur</label>
-                     <input type="text" id="director" name="director" placeholder="Ex: Christopher Nolan" required>
-                 </div>
-                 
-                 <!-- Champ : Année de sortie -->
-                 <div class="form-group">
-                     <label for="releaseYear">Année de sortie</label>
-                     <input type="number" id="releaseYear" name="releaseYear" placeholder="Ex: 2010" min="1900" max="2099" required>
-                 </div>
-                 
-                 <!-- Bouton de soumission du formulaire -->
-                 <button type="submit" class="btn btn-primary">Ajouter le film</button>
-             </form>
-         </div>
      </div>
      
      <!-- Inclusion du footer (pied de page) -->
      <%- include('partials/footer') %>
-     <script>
-        const form = document.querySelector('.add-movie-form');
-        form.addEventListener('submit', addMovie);
-
-        function addMovie(event) {
-            event.preventDefault();
-
-            if (window.fetch) {
-                const formData = new URLSearchParams(new FormData(form));
-                fetch('/movies', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
-                    },
-                    body: formData
-                })
-                .then(checkStatus)
-                .catch(function(error){
-                    console.error('request failed', error);
-                });
-            } else {
-                // JQuery ou fallback possible
-            }
-        }
-
-        function checkStatus(response) {
-            if (response.ok) {
-                form.reset();
-                window.location.reload();
-            } else {
-                console.error('Erreur lors de l\'ajout du film', response.status);
-            }
-        }
-     </script>
 </body>
 </html>

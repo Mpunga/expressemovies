@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/public/style.css">
+    <title>Ajouter un Film - Express Movies</title>
+</head>
+<body>
+    <%- include('partials/header') %>
+
+    <div class="central">
+        <div class="add-movie-page">
+            <div class="add-movie-header">
+                <h1>➕ Ajouter un nouveau film</h1>
+                <p>Remplissez le formulaire ci-dessous pour ajouter un film à notre collection</p>
+            </div>
+
+            <!-- Formulaire d'ajout de film -->
+            <form action="/movies" method="post" enctype="multipart/form-data" class="movie-form" id="addMovieForm">
+                <div class="form-section">
+                    <h3>Informations du Film</h3>
+                    
+                    <!-- Champ : Titre du film -->
+                    <div class="form-group">
+                        <label for="title">Titre du film *</label>
+                        <input type="text" id="title" name="title" placeholder="Ex: Inception" required>
+                    </div>
+                    
+                    <!-- Champ : Réalisateur -->
+                    <div class="form-group">
+                        <label for="director">Réalisateur *</label>
+                        <input type="text" id="director" name="director" placeholder="Ex: Christopher Nolan" required>
+                    </div>
+                    
+                    <!-- Champ : Année de sortie -->
+                    <div class="form-group">
+                        <label for="releaseYear">Année de sortie *</label>
+                        <input type="number" id="releaseYear" name="releaseYear" placeholder="Ex: 2010" min="1900" max="2099" required>
+                    </div>
+
+                    <!-- Champ : Affiche du film -->
+                    <div class="form-group">
+                        <label for="poster">Affiche du film (optionnel)</label>
+                        <input type="file" id="poster" name="poster" accept="image/*">
+                        <small>Formats acceptés: JPG, PNG, GIF (max 5MB)</small>
+                    </div>
+                </div>
+
+                <!-- Boutons d'action -->
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">✓ Ajouter le film</button>
+                    <a href="/movies" class="btn btn-secondary">Annuler</a>
+                </div>
+            </form>
+
+            <!-- Messages de statut -->
+            <div id="statusMessage" class="status-message" style="display: none;"></div>
+        </div>
+    </div>
+
+    <%- include('partials/footer') %>
+
+    <script>
+        const form = document.getElementById('addMovieForm');
+        const statusMessage = document.getElementById('statusMessage');
+
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const formData = new FormData(form);
+            const btn = form.querySelector('button[type="submit"]');
+            const originalText = btn.textContent;
+            
+            btn.disabled = true;
+            btn.textContent = 'Ajout en cours...';
+
+            fetch('/movies', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => {
+                if (response.ok) {
+                    showStatus('success', '✓ Film ajouté avec succès ! Redirection...');
+                    setTimeout(() => {
+                        window.location.href = '/movies';
+                    }, 1500);
+                } else {
+                    showStatus('error', '✗ Erreur lors de l\'ajout du film');
+                    btn.disabled = false;
+                    btn.textContent = originalText;
+                }
+            })
+            .catch(error => {
+                console.error('Erreur:', error);
+                showStatus('error', '✗ Erreur de connexion. Réessayez.');
+                btn.disabled = false;
+                btn.textContent = originalText;
+            });
+        });
+
+        function showStatus(type, message) {
+            statusMessage.textContent = message;
+            statusMessage.className = `status-message status-${type}`;
+            statusMessage.style.display = 'block';
+        }
+    </script>
+</body>
+</html>
