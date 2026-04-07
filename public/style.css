@@ -86,11 +86,159 @@ body {
     border-bottom: 2px solid #ffd700;
 }
 
+/* Info utilisateur dans le menu */
+.user-info {
+    color: #ffd700;
+    font-weight: 600;
+    padding: 0.5rem 0;
+}
+
+/* Bouton Déconnexion */
+.btn-logout {
+    color: #ff6b6b !important;
+    font-weight: 600;
+    border-radius: 4px;
+    padding: 0.4rem 0.8rem;
+    background: rgba(255, 107, 107, 0.1);
+    transition: all 0.3s ease;
+}
+
+.btn-logout:hover {
+    color: white !important;
+    background: #ff6b6b;
+    border-bottom: none;
+}
+
 .central {
     min-height: 250px;
     max-width: 1200px;
     margin: 2rem auto;
     padding: 0 2rem;
+}
+
+body {
+    font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: radial-gradient(circle at top left, rgba(102, 126, 234, 0.22), transparent 35%),
+                linear-gradient(180deg, #f5f7ff 0%, #eef2ff 45%, #ffffff 100%);
+    color: #1f2937;
+    min-height: 100vh;
+}
+
+.login-page {
+    min-height: calc(100vh - 180px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem 1.5rem;
+}
+
+/* =====================================================
+   PAGE DE CONNEXION
+   ===================================================== */
+.login-card {
+    width: min(100%, 440px);
+    padding: 2.5rem;
+    background: rgba(255, 255, 255, 0.94);
+    border-radius: 28px;
+    box-shadow: 0 32px 80px rgba(63, 76, 124, 0.12);
+    border: 1px solid rgba(102, 126, 234, 0.15);
+}
+
+.login-card__hero {
+    margin-bottom: 2rem;
+}
+
+.login-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.45rem 0.85rem;
+    border-radius: 999px;
+    background: rgba(102, 126, 234, 0.12);
+    color: #334155;
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+}
+
+.login-card h1 {
+    margin: 1rem 0 0.75rem;
+    color: #111827;
+    font-size: clamp(2rem, 2.3vw, 2.5rem);
+    line-height: 1.05;
+}
+
+.login-card p {
+    margin: 0;
+    color: #475569;
+    line-height: 1.75;
+    font-size: 1rem;
+}
+
+.login-form {
+    display: grid;
+    gap: 1.25rem;
+}
+
+.form-group {
+    display: grid;
+    gap: 0.65rem;
+}
+
+.login-form label {
+    font-size: 0.95rem;
+    color: #334155;
+    font-weight: 600;
+}
+
+.login-form input {
+    width: 100%;
+    padding: 1rem 1.1rem;
+    border: 1px solid rgba(148, 163, 184, 0.32);
+    border-radius: 18px;
+    font-size: 1rem;
+    color: #0f172a;
+    background: #f8fafc;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.login-form input:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 6px rgba(102, 126, 234, 0.12);
+}
+
+.btn-block {
+    width: 100%;
+    padding: 1rem;
+    border-radius: 999px;
+    font-size: 1rem;
+}
+
+.alert {
+    padding: 1rem 1.1rem;
+    background: #fff1f2;
+    color: #991b1b;
+    border-radius: 16px;
+    border: 1px solid #fecaca;
+    margin-bottom: 1rem;
+}
+
+.login-card__footer {
+    margin-top: 1.5rem;
+    text-align: center;
+    color: #64748b;
+    font-size: 0.95rem;
+}
+
+.login-card__footer a {
+    color: #6366f1;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.login-card__footer a:hover {
+    text-decoration: underline;
 }
 
 /* =====================================================
@@ -403,6 +551,370 @@ body {
 }
 
 /* =====================================================
+   PAGE RECHERCHE DE FILMS
+   ===================================================== */
+/* En-tête de la page de recherche */
+.search-header {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+/* Titre principal de la recherche */
+.search-header h1 {
+    font-size: 2.5rem;
+    color: #333;
+    margin-bottom: 0.5rem;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* Sous-titre de la recherche */
+.search-subtitle {
+    font-size: 1.3rem;
+    color: #667eea;
+    font-weight: 600;
+    margin-bottom: 0.8rem;
+    letter-spacing: 0.5px;
+}
+
+/* Description de la recherche */
+.search-description {
+    font-size: 1rem;
+    color: #666;
+    margin-bottom: 0;
+    line-height: 1.6;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Conteneur principal de recherche */
+.search-container {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.08) 0%, rgba(118, 75, 162, 0.08) 100%);
+    padding: 2.5rem;
+    border-radius: 15px;
+    border: 2px solid rgba(102, 126, 234, 0.2);
+    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.1);
+    max-width: 700px;
+    margin: 0 auto 3rem;
+}
+
+/* Champ d'entrée de recherche */
+.search-container input {
+    flex: 1;
+    min-width: 250px;
+    padding: 1rem 1.5rem;
+    border: 2px solid #ddd;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-family: inherit;
+    transition: all 0.3s ease;
+    background-color: white;
+}
+
+/* Focus sur le champ de recherche */
+.search-container input:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 15px rgba(102, 126, 234, 0.3);
+    background-color: #f9f9ff;
+}
+
+/* Placeholder du champ de recherche */
+.search-container input::placeholder {
+    color: #999;
+}
+
+/* Bouton de recherche */
+#btnSearch {
+    padding: 1rem 2.5rem;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+}
+
+/* Hover sur le bouton de recherche */
+#btnSearch:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+}
+
+/* Active/Click sur le bouton de recherche */
+#btnSearch:active {
+    transform: translateY(0);
+}
+
+/* Conteneur des résultats de recherche */
+#results {
+    margin-top: 2rem;
+    min-height: 100px;
+}
+
+/* Texte d'information dans les résultats */
+#results > p {
+    text-align: center;
+    color: #666;
+    font-size: 1.1rem;
+    padding: 2rem;
+}
+
+/* Style pour le message d'aucun résultat */
+#results p:first-child {
+    color: #999;
+}
+
+/* =====================================================
+   CARTES DE FILM AMÉLIORÉES (GRILLE DE RECHERCHE)
+   ===================================================== */
+/* Conteneur de l'image du film */
+.movie-poster-container {
+    position: relative;
+    overflow: hidden;
+    border-radius: 10px 10px 0 0;
+    height: 300px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+/* Image du film */
+.movie-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+/* Overlay au survol */
+.movie-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+/* Hover sur le conteneur de l'affiche */
+.movie-poster-container:hover .movie-overlay {
+    opacity: 1;
+}
+
+/* Hover sur l'image du film */
+.movie-poster-container:hover .movie-image {
+    transform: scale(1.1);
+}
+
+/* Bouton "Voir les détails" */
+.view-details-btn {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: 2px solid white;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 0.95rem;
+}
+
+.view-details-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+}
+
+/* Zone d'info du film */
+.movie-info {
+    padding: 1.5rem;
+    background: white;
+    flex: 1;
+}
+
+/* Année du film */
+.movie-year {
+    font-size: 0.9rem;
+    color: #999;
+    margin-bottom: 0.5rem;
+}
+
+/* Note du film */
+.movie-rating {
+    color: #667eea;
+    font-weight: bold;
+    margin-bottom: 0.75rem;
+}
+
+/* Description courte du film */
+.movie-description {
+    font-size: 0.9rem;
+    color: #666;
+    line-height: 1.5;
+    margin-top: 0.75rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* =====================================================
+   MODAL DE DÉTAILS DU FILM
+   ===================================================== */
+/* Overlay de la modale */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    padding: 2rem;
+    animation: fadeIn 0.3s ease;
+}
+
+/* Animation d'apparition */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* Contenu de la modale */
+.modal-content {
+    background: white;
+    border-radius: 15px;
+    max-width: 900px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    animation: slideUp 0.3s ease;
+}
+
+/* Animation de slide up */
+@keyframes slideUp {
+    from {
+        transform: translateY(30px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* Bouton fermer la modale */
+.modal-close {
+    position: absolute;
+    top: 1.5rem;
+    right: 1.5rem;
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    z-index: 1001;
+}
+
+.modal-close:hover {
+    background: rgba(0, 0, 0, 0.8);
+    transform: rotate(90deg);
+}
+
+/* Corps de la modale */
+.modal-body {
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    gap: 2rem;
+    padding: 2rem;
+}
+
+/* Affiche dans la modale */
+.modal-poster {
+    position: relative;
+}
+
+.modal-poster img {
+    width: 100%;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+/* Section d'infos dans la modale */
+.modal-info {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Titre dans la modale */
+.modal-info h2 {
+    font-size: 2rem;
+    color: #333;
+    margin-bottom: 1.5rem;
+}
+
+/* Paragraphe d'info dans la modale */
+.modal-info p {
+    margin-bottom: 1rem;
+    color: #666;
+    line-height: 1.6;
+}
+
+.release-year,
+.rating-modal,
+.genre-modal,
+.director-modal,
+.actors-modal {
+    font-size: 0.95rem;
+}
+
+/* Synopsis */
+.synopsis {
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid #f0f0f0;
+}
+
+.synopsis h3 {
+    color: #333;
+    margin-bottom: 1rem;
+    font-size: 1.2rem;
+}
+
+.synopsis p {
+    color: #666;
+    line-height: 1.8;
+    text-align: justify;
+}
+
+/* =====================================================
    RESPONSIVE DESIGN - Adaptation pour les petits écrans
    ===================================================== */
 @media (max-width: 768px) {
@@ -421,6 +933,28 @@ body {
         font-size: 1.8rem;
     }
 
+    /* Réduit la taille du titre de recherche */
+    .search-header h1 {
+        font-size: 1.8rem;
+    }
+
+    /* Adapte le conteneur de recherche pour mobile */
+    .search-container {
+        flex-direction: column;
+        padding: 1.5rem;
+    }
+
+    /* Champ d'entrée prend toute la largeur sur mobile */
+    .search-container input {
+        width: 100%;
+        min-width: unset;
+    }
+
+    /* Bouton prend toute la largeur sur mobile */
+    #btnSearch {
+        width: 100%;
+    }
+
     /* Adapte la grille de films pour les petits écrans */
     .movies-grid {
         grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
@@ -435,5 +969,25 @@ body {
     /* Réduit la grande affiche du film */
     .movie-poster-large {
         font-size: 5rem;
+    }
+
+    /* Adapte la modale pour mobile */
+    .modal-overlay {
+        padding: 1rem;
+    }
+
+    .modal-body {
+        grid-template-columns: 1fr;
+        padding: 1.5rem;
+        gap: 1.5rem;
+    }
+
+    .modal-info h2 {
+        font-size: 1.5rem;
+    }
+
+    .modal-poster {
+        max-width: 250px;
+        margin: 0 auto;
     }
 }

@@ -4,6 +4,7 @@
 
 // Importation du module Express pour créer le serveur web
 const express = require('express');
+const session = require('express-session');
 
 const PORT = 3000; // Port sur lequel le serveur écoute
 const bodyParser = require('body-parser')
@@ -45,6 +46,24 @@ let frenchMovies = [
 // Middleware : Sert les fichiers statiques (CSS, images, etc.) depuis le dossier 'public'
 app.use('/public', express.static('public'))
 app.use(bodyParser.urlencoded({ extended: false }))
+
+// Configuration des sessions
+app.use(session({
+  secret: 'your-secret-key-expressemovies',
+  resave: false,
+  saveUninitialized: false,
+  cookie: { 
+    secure: false,
+    maxAge: 1000 * 60 * 60 * 24 // 24 heures
+  }
+}));
+
+// Middleware pour passer l'info utilisateur aux templates
+app.use((req, res, next) => {
+  res.locals.user = req.session.user || null;
+  next();
+});
+
 // Configuration des templates
 // Indique à Express où trouvé les fichiers de template (vues)
 app.set('views', './views');
@@ -118,6 +137,47 @@ app.get('/movies/:id', (req, res) => {
 app.get('/', (req, res) => {
   // Rendu du template 'index' pour afficher la page d'accueil
   res.render('index');
+});
+
+// ROUTE 6 : Page de connexion
+app.get('/login', (req, res) => {
+  res.render('login', { error: null });
+});
+
+app.post('/login', (req, res) => {
+  const email = req.body.email ? req.body.email.trim() : '';
+  const password = req.body.password ? req.body.password : '';
+
+  // Utilisateur de test
+  const fakeUser = {
+    email: 'testuser@example.com',
+    password: '123'
+  };
+
+  if (fakeUser.email === email && fakeUser.password === password) {
+    // Création de la session utilisateur
+    req.session.user = {
+      email: email,
+      name: 'Utilisateur'
+    };
+    return res.redirect('/movies');
+  }
+
+  res.render('login', { error: 'Identifiants invalides. Essayez testuser@example.com / 123' });
+});
+
+// ROUTE 7 : Logout
+app.get('/logout', (req, res) => {
+  req.session.destroy((err) => {
+    if (err) {
+      return res.render('index', { error: 'Erreur lors de la déconnexion' });
+    }
+    res.redirect('/');
+  });
+});
+
+app.get('/movie-search', (req, res) => {
+  res.render('movie-search');
 });
 
 // =====================================================

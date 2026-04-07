@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/public/style.css">
+    <title>Recherche de films</title>
+</head>
+<body>
+    <div class="search-header">
+        <h1>Votre recherche sur <em>The Movie Database</em></h1>
+        <p class="search-subtitle">Découvrez des milliers de films du monde entier</p>
+        <p class="search-description">Explorez notre base de données complète et trouvez vos films préférés en quelques secondes</p>
+    </div>
+
+    <div class="search-container">
+        <input type="text" name="term" id="term" placeholder="Entrez le titre du film..." required>
+        <button id="btnSearch">🔍 Rechercher</button>
+    </div>
+
+    <div id="results">
+        <!-- Les résultats de la recherche seront affichés ici -->
+    </div>
+
+    <%- include('partials/footer') %>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script>
+        const API_KEY = '657d84d91b603b4ff278dc14cb4ea7d6'; // Remplacez par votre clé API TMDB
+        const searchForm = document.querySelector('#term');
+        const btnSearch = document.querySelector('#btnSearch');
+        const resultsContainer = document.querySelector('#results');
+
+        // Récupère les genres depuis l'API
+        async function getGenres() {
+            try {
+                const response = await axios.get(`https://api.themoviedb.org/3/genre/movie/list?api_key=${API_KEY}&language=fr-FR`);
+                return response.data.genres;
+            } catch (error) {
+                console.error('Erreur lors de la récupération des genres:', error);
+                return [];
+            }
+        }
+
+        // Récupère les détails complets d'un film
+        async function getMovieDetails(movieId) {
+            try {
+                const response = await axios.get(`https://api.themoviedb.org/3/movie/${movieId}?api_key=${API_KEY}&language=fr-FR&append_to_response=credits`);
+                return response.data;
+            } catch (error) {
+                console.error('Erreur lors de la récupération des détails:', error);
+                return null;
+            }
+        }
+
+        // Affiche les détails d'un film en modal
+        async function showMovieDetails(movieId) {
+            const details = await getMovieDetails(movieId);
+            if (!details) {
+                alert('Impossible de charger les détails du film');
+                return;
+            }
+
+            const director = details.credits?.crew?.find(person => person.job === 'Director')?.name || 'N/A';
+            const actors = details.credits?.cast?.slice(0, 5).map(actor => actor.name).join(', ') || 'N/A';
+            const genres = details.genres?.map(g => g.name).join(', ') || 'N/A';
+            const poster = details.poster_path 
+                ? `https://image.tmdb.org/t/p/w500${details.poster_path}` 
+                : '/public/default-poster.jpg';
+
+            const modalHTML = `
+                <div class="modal-overlay" onclick="closeModal()">
+                    <div class="modal-content" onclick="event.stopPropagation()">
+                        <button class="modal-close" onclick="closeModal()">✕</button>
+                        <div class="modal-body">
+                            <div class="modal-poster">
+                                <img src="${poster}" alt="${details.title}">
+                            </div>
+                            <div class="modal-info">
+                                <h2>${details.title}</h2>
+                                <p class="release-year"><strong>Année:</strong> ${new Date(details.release_date).getFullYear()}</p>
+                                <p class="rating-modal"><strong>Note:</strong> ⭐ ${details.vote_average.toFixed(1)}/10</p>
+                                <p class="genre-modal"><strong>Genres:</strong> ${genres}</p>
+                                <p class="director-modal"><strong>Réalisateur:</strong> ${director}</p>
+                                <p class="actors-modal"><strong>Acteurs principaux:</strong> ${actors}</p>
+                                <div class="synopsis">
+                                    <h3>Synopsis</h3>
+                                    <p>${details.overview || 'Aucune description disponible.'}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            resultsContainer.insertAdjacentHTML('afterend', modalHTML);
+        }
+
+        function closeModal() {
+            const modal = document.querySelector('.modal-overlay');
+            if (modal) modal.remove();
+        }
+
+        function displayResults(movies) {
+            if (!movies || movies.length === 0) {
+                resultsContainer.innerHTML = '<p>Aucun résultat trouvé.</p>';
+                return;
+            }
+
+            let html = '<div class="movies-grid">';
+            movies.forEach(movie => {
+                const poster = movie.poster_path 
+                    ? `https://image.tmdb.org/t/p/w200${movie.poster_path}` 
+                    : '/public/default-poster.jpg';
+                
+                const overview = movie.overview || 'Aucune description disponible.';
+                const shortOverview = overview.length > 100 ? overview.substring(0, 100) + '...' : overview;
+
+                html += `
+                    <div class="movie-card" onclick="showMovieDetails(${movie.id})">
+                        <div class="movie-poster-container">
+                            <img src="${poster}" alt="${movie.title}" class="movie-image">
+                            <div class="movie-overlay">
+                                <button class="view-details-btn">Voir les détails</button>
+                            </div>
+                        </div>
+                        <div class="movie-info">
+                            <h3>${movie.title}</h3>
+                            <p class="movie-year">${movie.release_date ? new Date(movie.release_date).getFullYear() : 'N/A'}</p>
+                            <p class="movie-rating">⭐ ${movie.vote_average.toFixed(1)}/10</p>
+                            <p class="movie-description">${shortOverview}</p>
+                        </div>
+                    </div>
+                `;
+            });
+            html += '</div>';
+            resultsContainer.innerHTML = html;
+        }
+
+        btnSearch.addEventListener('click', async () => {
+            const query = searchForm.value.trim();
+            if (query) {
+                resultsContainer.innerHTML = '<p>Chargement...</p>';
+                try {
+                    const response = await axios.get(`https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&query=${encodeURIComponent(query)}`);
+                    const movies = response.data.results;
+                    displayResults(movies);
+                } catch (error) {
+                    console.error('Erreur lors de la recherche:', error);
+                    resultsContainer.innerHTML = '<p>Une erreur est survenue lors de la recherche. Veuillez réessayer.</p>';
+                }
+            }
+        });
+    </script>
+</body>
+</html>

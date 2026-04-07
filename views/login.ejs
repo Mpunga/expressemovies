@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/public/style.css">
+    <title>Connexion - Express Movies</title>
+</head>
+<body>
+    <%- include('partials/header') %>
+
+    <main class="login-page">
+        <section class="login-card">
+            <div class="login-card__hero">
+                <span class="login-badge">Bienvenue</span>
+                <h1>Connectez-vous</h1>
+                <p>Accédez à votre espace Express Movies et retrouvez vos films préférés.</p>
+            </div>
+
+            <% if (error) { %>
+                <div class="alert"><%= error %></div>
+            <% } %>
+
+            <form action="/login" method="post" class="login-form" novalidate>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" placeholder="votre@email.com" required autocomplete="email">
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Mot de passe</label>
+                    <input type="password" id="password" name="password" placeholder="••••••••" required autocomplete="current-password">
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-block">Se connecter</button>
+            </form>
+
+            <p class="login-card__footer">Test : testuser@example.com / 123</p>
+        </section>
+    </main>
+
+    <%- include('partials/footer') %>
+
+    <script>
+        document.querySelector('.login-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const email = this.email.value.trim();
+            const password = this.password.value;
+
+            if (!email || !password) return;
+
+            // Affiche un message de chargement
+            const btn = this.querySelector('button');
+            const originalText = btn.textContent;
+            btn.textContent = 'Connexion...';
+            btn.disabled = true;
+
+            // Envoie la requête XHR
+            fetch('/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: `email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`
+            })
+            .then(res => res.text())
+            .then(html => {
+                // Si on reçoit un HTML avec .login-form, c'est une erreur (re-rendu du formulaire)
+                if (html.includes('login-form')) {
+                    console.log('Authentification échouée');
+                    btn.textContent = originalText;
+                    btn.disabled = false;
+                    // Rechargez la page pour afficher le message d'erreur
+                    window.location.reload();
+                } else {
+                    // Succès - redirection vers /movies
+                    console.log('Authentification réussie');
+                    window.location.href = '/movies';
+                }
+            })
+            .catch(err => {
+                console.error('Erreur:', err);
+                btn.textContent = originalText;
+                btn.disabled = false;
+            });
+        });
+    </script>
+</body>
+</html>
