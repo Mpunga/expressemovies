@@ -75,7 +75,7 @@
             btn.disabled = true;
             btn.textContent = 'Ajout en cours...';
 
-            fetch('/movies', {
+            authenticatedFetch('/movies', {
                 method: 'POST',
                 body: formData
             })

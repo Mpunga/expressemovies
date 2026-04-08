@@ -42,23 +42,59 @@
     <%- include('partials/footer') %>
 
     <script>
-        // Fonction pour récupérer le token stocké
+        // page login - gestion client
+        // Cette page affiche le formulaire d'authentification et envoie les identifiants
+        // au serveur via fetch. Après réception d'un JWT valide, le token est stocké
+        // dans localStorage et le payload utilisateur est extrait pour un usage futur.
+
+        // Récupère le token brut stocké dans localStorage
         function getToken() {
             return localStorage.getItem('authToken');
         }
 
-        // Fonction pour récupérer les données du token
-        function decodeToken(token) {
+        // Décode un JWT côté client en lisant sa partie payload
+        // Le format attendu est header.payload.signature.
+        function parseJwt(token) {
             try {
                 const parts = token.split('.');
                 if (parts.length !== 3) return null;
-                const decoded = JSON.parse(atob(parts[1]));
-                return decoded;
+
+                const base64Url = parts[1];
+                const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+                const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+                    return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+                }).join(''));
+
+                return JSON.parse(jsonPayload);
             } catch (e) {
+                // Retourne null si le token n'est pas un JWT valide
                 return null;
             }
         }
 
+        // Stocke le JWT dans localStorage et conserve un payload structuré
+        // Ce payload utilisateur est ensuite disponible sous authPayload.
+        function token(tokenValue) {
+            if (!tokenValue) return null;
+
+            localStorage.setItem('authToken', tokenValue);
+            const decoded = parseJwt(tokenValue);
+            if (!decoded) return null;
+
+            const payload = {
+                sub: decoded.sub || '',
+                name: decoded.name || '',
+                role: decoded.role || '',
+                iat: decoded.iat || null
+            };
+
+            localStorage.setItem('authPayload', JSON.stringify(payload));
+            return payload;
+        }
+
+        // Écouteur sur l'envoi du formulaire de connexion
+        // Empêche le comportement par défaut, envoie les données utilisateur au serveur,
+        // gère l'état du bouton et redirige vers /movies en cas de succès.
         document.querySelector('.login-form').addEventListener('submit', function(e) {
             e.preventDefault();
             const email = this.email.value.trim();
@@ -66,32 +102,41 @@
 
             if (!email || !password) return;
 
-            // Affiche un message de chargement
             const btn = this.querySelector('button');
             const originalText = btn.textContent;
             btn.textContent = 'Connexion...';
             btn.disabled = true;
 
-            // Envoie la requête XHR
             fetch('/login', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                 body: `email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`
             })
-            .then(res => res.json())
+            .then(res => {
+                if (res.redirected) {
+                    // Le serveur a redirigé - succès de connexion
+                    console.log('Connexion réussie, redirection vers:', res.url);
+                    window.location.href = res.url;
+                    return;
+                } else if (res.ok) {
+                    // Réponse JSON (succès ou erreur)
+                    return res.json();
+                } else {
+                    throw new Error('Erreur HTTP: ' + res.status);
+                }
+            })
             .then(data => {
-                if (data.token) {
+
+                if (data && data.token) {
                     console.log('Authentification réussie, token récupéré :', data.token);
-                    const decoded = decodeToken(data.token);
-                    console.log('Données du token :', decoded);
-                    localStorage.setItem('authToken', data.token);
-                    console.log('Token stocké dans localStorage');
+                    const payload = token(data.token);
+                    console.log('Payload décodé stocké :', payload);
                     window.location.href = '/movies';
                     return;
                 }
 
-                console.log('Authentification échouée :', data.error);
-                alert(data.error || 'Erreur de connexion');
+                console.log('Authentification échouée :', data?.error);
+                alert(data?.error || 'Erreur de connexion');
                 btn.textContent = originalText;
                 btn.disabled = false;
             })

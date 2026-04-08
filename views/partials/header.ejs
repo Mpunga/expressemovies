@@ -27,7 +27,7 @@
                 
                 <!-- Affiche Connexion ou Déconnexion selon l'état -->
                 <% if (user) { %>
-                    <li><a href="/logout" class="btn-logout" onclick="localStorage.removeItem('authToken'); return true;">Déconnexion</a></li>
+                    <li><a href="/logout" class="btn-logout" onclick="logout(); return false;">Déconnexion</a></li>
                 <% } else { %>
                     <li><a href="/login">Connexion</a></li>
                 <% } %>
@@ -35,3 +35,57 @@
         </div>
     </nav>
 </header>
+
+<!-- =====================================================
+     UTILITAIRES JAVASCRIPT COMMUNS
+     Fonctions partagées entre toutes les pages
+     ===================================================== -->
+<script>
+    // Fonction utilitaire pour faire des requêtes HTTP authentifiées
+    // Ajoute automatiquement le token JWT de localStorage dans l'en-tête Authorization
+    function authenticatedFetch(url, options = {}) {
+        const token = localStorage.getItem('authToken');
+        
+        // Configuration par défaut pour les requêtes
+        const defaultOptions = {
+            headers: {},
+            ...options
+        };
+
+        // Ne pas définir Content-Type si c'est un FormData (laisser le navigateur gérer)
+        if (!(options.body instanceof FormData)) {
+            defaultOptions.headers['Content-Type'] = 'application/json';
+        }
+
+        // Ajouter le token JWT si disponible
+        if (token) {
+            defaultOptions.headers['Authorization'] = `Bearer ${token}`;
+        }
+
+        return fetch(url, defaultOptions);
+    }
+
+    // Vérifier si l'utilisateur est authentifié
+    function isAuthenticated() {
+        return localStorage.getItem('authToken') !== null;
+    }
+
+    // Rediriger vers la page de connexion si non authentifié
+    function requireAuth() {
+        if (!isAuthenticated()) {
+            window.location.href = '/login';
+            return false;
+        }
+        return true;
+    }
+
+    // Fonction de déconnexion
+    function logout() {
+        // Supprimer le token côté client
+        localStorage.removeItem('authToken');
+        localStorage.removeItem('authPayload');
+        
+        // Rediriger vers la page de déconnexion côté serveur
+        window.location.href = '/logout';
+    }
+</script>
