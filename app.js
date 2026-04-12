@@ -7,7 +7,7 @@ const express = require('express');
 const session = require('express-session');
 
 const PORT = 3000; // Port sur lequel le serveur écoute
-const bodyParser = require('body-parser')
+const bodyParser = require('body-parser');
 
 const multer  = require('multer')
 const upload = multer({ dest: 'uploads/' })
@@ -15,7 +15,8 @@ const upload = multer({ dest: 'uploads/' })
 const app = express();
 
 const jwt = require('jsonwebtoken');
-
+const expressJwt = require('express-jwt');
+const secret = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImlhdCI6MTUxNjIzOTAyMn0.KMUFsIDTnFmyG3nMiGM6H9FNFUROf3wh7SmqJp-QV30';
 
 let frenchMovies = [
   {
@@ -52,7 +53,7 @@ app.use(bodyParser.urlencoded({ extended: false }))
 
 // Configuration des sessions
 app.use(session({
-  secret: 'your-secret-key-expressemovies',
+  secret: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImlhdCI6MTUxNjIzOTAyMn0.KMUFsIDTnFmyG3nMiGM6H9FNFUROf3wh7SmqJp-QV30',
   resave: false,
   saveUninitialized: false,
   cookie: { 
@@ -158,15 +159,13 @@ app.post('/login', (req, res) => {
   };
 
   if (fakeUser.email === email && fakeUser.password === password) {
-    const secret = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImlhdCI6MTUxNjIzOTAyMn0.KMUFsIDTnFmyG3nMiGM6H9FNFUROf3wh7SmqJp-QV30';
     const token = jwt.sign({
-      sub: '1234567890',
-      name: 'John Doe',
-      admin: true,
-      iat: 1516239022
-    }, secret, { expiresIn: '1h' });
-    console.log('Token JWT généré :', token);
-
+      sub: '',
+      name: '',
+      admin: false,
+      iat: 
+        Math.floor(Date.now() / 1000)
+    }, secret, { expiresIn: '1h' });  
     // Création de la session utilisateur avec le token
     req.session.user = {
       email: email,
